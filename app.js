@@ -121,6 +121,15 @@ app.get("/", (req, res) => {
   res.redirect("/listing");
 });
 
+app.use((req, res, next) => {
+  console.log("REQUEST:", req.method, req.originalUrl);
+  next();
+});
+
+app.all(/.*/, (req, res, next) => {
+  next(new ExpressError(404, "Page Not Found"));
+});
+
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
