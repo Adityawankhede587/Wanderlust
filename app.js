@@ -127,6 +127,7 @@ app.use((req, res, next) => {
 });
 
 app.all(/.*/, (req, res, next) => {
+  console.log("404 URL:", req.originalUrl);
   next(new ExpressError(404, "Page Not Found"));
 });
 
