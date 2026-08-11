@@ -3,7 +3,7 @@ if(process.env.NODE_ENV != "production"){
 }
 
 
-
+const PORT = process.env.PORT || 3001;
 
 const express = require("express");
 const app = express();
@@ -26,6 +26,7 @@ const reviewRouter = require("./Routes/review.js");
 const userRouter = require("./Routes/user.js");
 
 const dbUrl= process.env.ATLASDB_URL;
+
 
 main()
   .then(() => {
@@ -116,7 +117,9 @@ app.use("/listing",listingRouter);
 app.use("/listing/:id/reviews",reviewRouter);
 app.use("/",userRouter);
 
-
+app.get("/", (req, res) => {
+  res.redirect("/listing");
+});
 
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
@@ -134,6 +137,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error.ejs", { message });
 });
 
-app.listen(3001, () => {
-  console.log("server is listining");
+
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
